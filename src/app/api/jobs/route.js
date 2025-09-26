@@ -3,39 +3,124 @@ import { NextResponse } from "next/server";
 
 const jobs = [
   {
-    id: 1,
-    title: "Wood Cutter",
-    company: "Local Co",
-    location: "Town A",
-    description: "Cut wood",
+    job_title: "Wood Cutter",
+    job_risks: "High",
+    work_date: "18-09-2025",
+    work_duration: "7 Hours",
+    full_address:
+      "Kumar House, Bazar Road, Hosur, Krishnagiri, 635109, Near Old Bus Stand, Beside Ramesh Stores",
   },
   {
-    id: 2,
-    title: "Gardener",
-    company: "Green Ltd",
-    location: "Town B",
-    description: "Maintain gardens",
+    job_title: "Residential Electrician (Wiring Repair)",
+    job_risks: "High",
+    work_date: "20-09-2025",
+    work_duration: "4 Hours",
+    full_address:
+      "No. 23, Venkata Nagar, 4th Cross, Bangalore, Bangalore Urban, 560076, Opposite Venkateshwara Temple, Above Sai Medicals",
   },
   {
-    id: 3,
-    title: "Barista",
-    company: "Cafe Good",
-    location: "Town C",
-    description: "Make beverages",
+    job_title: "Plumber (Pipe Replacement)",
+    job_risks: "Medium",
+    work_date: "16-09-2025",
+    work_duration: "5 Hours",
+    full_address:
+      "House A-12, Green Park Colony, Meerut, Meerut District, 250001, Near Central School, 2nd Gate",
   },
   {
-    id: 4,
-    title: "Tutor",
-    company: "Home Tuition",
-    location: "Town D",
-    description: "Teach math",
+    job_title: "House Painter (Interior)",
+    job_risks: "Medium",
+    work_date: "21-09-2025",
+    work_duration: "8 Hours",
+    full_address:
+      "14B, Rose Villa, Old Mahabalipuram Road, Chennai, Chengalpattu, 600097, Landmark: Opposite Akshaya Bakery, Near Phase 2 Park",
   },
   {
-    id: 5,
-    title: "Delivery",
-    company: "FastShip",
-    location: "Town E",
-    description: "Local deliveries",
+    job_title: "Fruit Harvester (Seasonal)",
+    job_risks: "Low",
+    work_date: "14-09-2025",
+    work_duration: "6 Hours",
+    full_address:
+      "Plot 48, Mango Orchard Lane, Taluk Road, Theni, Theni District, 625531, Landmark: Beside Cooperative Society, Near Checkpost",
+  },
+  {
+    job_title: "Wood Cutter",
+    job_risks: "High",
+    work_date: "18-09-2025",
+    work_duration: "7 Hours",
+    full_address:
+      "Kumar House, Bazar Road, Hosur, Krishnagiri, 635109, Near Old Bus Stand, Beside Ramesh Stores",
+  },
+  {
+    job_title: "Residential Electrician (Wiring Repair)",
+    job_risks: "High",
+    work_date: "20-09-2025",
+    work_duration: "4 Hours",
+    full_address:
+      "No. 23, Venkata Nagar, 4th Cross, Bangalore, Bangalore Urban, 560076, Opposite Venkateshwara Temple, Above Sai Medicals",
+  },
+  {
+    job_title: "Plumber (Pipe Replacement)",
+    job_risks: "Medium",
+    work_date: "16-09-2025",
+    work_duration: "5 Hours",
+    full_address:
+      "House A-12, Green Park Colony, Meerut, Meerut District, 250001, Near Central School, 2nd Gate",
+  },
+  {
+    job_title: "House Painter (Interior)",
+    job_risks: "Medium",
+    work_date: "21-09-2025",
+    work_duration: "8 Hours",
+    full_address:
+      "14B, Rose Villa, Old Mahabalipuram Road, Chennai, Chengalpattu, 600097, Landmark: Opposite Akshaya Bakery, Near Phase 2 Park",
+  },
+  {
+    job_title: "Fruit Harvester (Seasonal)",
+    job_risks: "Low",
+    work_date: "14-09-2025",
+    work_duration: "6 Hours",
+    full_address:
+      "Plot 48, Mango Orchard Lane, Taluk Road, Theni, Theni District, 625531, Landmark: Beside Cooperative Society, Near Checkpost",
+  },
+  {
+    job_title: "Wood Cutter",
+    job_risks: "High",
+    work_date: "18-09-2025",
+    work_duration: "7 Hours",
+    full_address:
+      "Kumar House, Bazar Road, Hosur, Krishnagiri, 635109, Near Old Bus Stand, Beside Ramesh Stores",
+  },
+  {
+    job_title: "Residential Electrician (Wiring Repair)",
+    job_risks: "High",
+    work_date: "20-09-2025",
+    work_duration: "4 Hours",
+    full_address:
+      "No. 23, Venkata Nagar, 4th Cross, Bangalore, Bangalore Urban, 560076, Opposite Venkateshwara Temple, Above Sai Medicals",
+  },
+  {
+    job_title: "Plumber (Pipe Replacement)",
+    job_risks: "Medium",
+    work_date: "16-09-2025",
+    work_duration: "5 Hours",
+    full_address:
+      "House A-12, Green Park Colony, Meerut, Meerut District, 250001, Near Central School, 2nd Gate",
+  },
+  {
+    job_title: "House Painter (Interior)",
+    job_risks: "Medium",
+    work_date: "21-09-2025",
+    work_duration: "8 Hours",
+    full_address:
+      "14B, Rose Villa, Old Mahabalipuram Road, Chennai, Chengalpattu, 600097, Landmark: Opposite Akshaya Bakery, Near Phase 2 Park",
+  },
+  {
+    job_title: "Fruit Harvester (Seasonal)",
+    job_risks: "Low",
+    work_date: "14-09-2025",
+    work_duration: "6 Hours",
+    full_address:
+      "Plot 48, Mango Orchard Lane, Taluk Road, Theni, Theni District, 625531, Landmark: Beside Cooperative Society, Near Checkpost",
   },
 ];
 
