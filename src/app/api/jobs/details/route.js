@@ -1,40 +1,37 @@
-// src/app/api/jobs/details/route.js
+// src/app/api/jobs/[id]/route.js
 import { NextResponse } from "next/server";
 import { getJobById } from "../../modules/Supabase";
 
-// Get allowed origins from environment or default to wildcard for development
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
-  : ["*"];
-
-// For development, allow all origins. For production, use specific origins
-const corsOrigin = allowedOrigins.includes("*") ? "*" : allowedOrigins[0];
-
 const corsHeaders = {
-  "Access-Control-Allow-Origin": corsOrigin,
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, ngrok-skip-browser-warning",
 };
 
+// Preflight handler (keeps browser + ngrok happy)
 export async function OPTIONS() {
   return new Response(null, { status: 204, headers: corsHeaders });
 }
 
-// GET /api/jobs/details -> { ok: true, job: {...}, events: [...] }
-export async function GET(request) {
-  console.log("[api] GET /api/jobs/details: received request");
+// GET /api/jobs/[id] -> { ok: true, job: {...}, events: [...] }
+export async function GET(request, { params }) {
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== "object") {
+    return NextResponse.json(
+      { ok: false, error: "Invalid JSON body" },
+      { status: 400, headers: corsHeaders }
+    );
+  }
 
-  // Get job ID from query parameters
-  const url = new URL(request.url);
-  const id = url.searchParams.get("id");
+  const { id } = body;
 
-  console.log("[api] GET /api/jobs/details: received ID from query", { id });
+  console.log("[api] GET /api/jobs/[id]: received request", { id });
 
   // Validate ID parameter
   if (!id) {
-    console.error("[api] GET /api/jobs/details: missing ID parameter");
+    console.error("[api] GET /api/jobs/[id]: missing ID parameter");
     return NextResponse.json(
-      { ok: false, error: "Job ID is required as query parameter (?id=...)" },
+      { ok: false, error: "Job ID is required" },
       { status: 400, headers: corsHeaders }
     );
   }
@@ -43,7 +40,7 @@ export async function GET(request) {
   const result = await getJobById(id);
 
   if (!result.ok) {
-    console.error("[api] GET /api/jobs/details: failed to fetch job", {
+    console.error("[api] GET /api/jobs/[id]: failed to fetch job", {
       error: result.error,
     });
 
@@ -55,9 +52,7 @@ export async function GET(request) {
     );
   }
 
-  console.log("[api] GET /api/jobs/details: success", {
-    jobId: result.data?.id,
-  });
+  console.log("[api] GET /api/jobs/[id]: success", { jobId: result.data?.id });
 
   // Return job data with events for Framer UI
   return NextResponse.json(
@@ -68,61 +63,4 @@ export async function GET(request) {
     },
     { headers: corsHeaders }
   );
-}
-
-// POST /api/jobs/details -> { ok: true, job: {...}, events: [...] }
-export async function POST(request) {
-  console.log("[api] POST /api/jobs/details: received request");
-
-  try {
-    const body = await request.json();
-    console.log("[api] POST /api/jobs/details: received body", body);
-
-    const { id } = body;
-
-    // Validate ID parameter
-    if (!id) {
-      console.error("[api] POST /api/jobs/details: missing ID in body");
-      return NextResponse.json(
-        { ok: false, error: "Job ID is required in request body" },
-        { status: 400, headers: corsHeaders }
-      );
-    }
-
-    // Fetch job from Supabase
-    const result = await getJobById(id);
-
-    if (!result.ok) {
-      console.error("[api] POST /api/jobs/details: failed to fetch job", {
-        error: result.error,
-      });
-
-      // Return 404 for "not found" errors, 500 for others
-      const statusCode = result.error === "Job not found" ? 404 : 500;
-      return NextResponse.json(
-        { ok: false, error: result.error },
-        { status: statusCode, headers: corsHeaders }
-      );
-    }
-
-    console.log("[api] POST /api/jobs/details: success", {
-      jobId: result.data?.id,
-    });
-
-    // Return job data with events for Framer UI
-    return NextResponse.json(
-      {
-        ok: true,
-        job: result.data,
-        events: ["fetched_job_by_id"],
-      },
-      { headers: corsHeaders }
-    );
-  } catch (error) {
-    console.error("[api] POST /api/jobs/details: error parsing body", error);
-    return NextResponse.json(
-      { ok: false, error: "Invalid JSON body" },
-      { status: 400, headers: corsHeaders }
-    );
-  }
 }
