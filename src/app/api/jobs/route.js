@@ -2,6 +2,14 @@
 import { NextResponse } from "next/server";
 import { fetchJobs } from "../modules/Supabase";
 
+// Get allowed origins from environment or default to wildcard for development
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((origin) => origin.trim())
+  : ["*"];
+
+// For development, allow all origins. For production, use specific origins
+const corsOrigin = allowedOrigins.includes("*") ? "*" : allowedOrigins[0];
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
