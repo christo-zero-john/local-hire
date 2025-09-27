@@ -12,7 +12,8 @@ const allowedRequestHeaders = [
 function buildCorsHeaders(request) {
   const origin = request?.headers?.get?.("origin") || "*";
   return {
-    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Origin":
+      "https://project-hjidobg8incb0yzib1ur.framercanvas.com/",
     "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
     "Access-Control-Allow-Headers": allowedRequestHeaders.join(", "),
     "Access-Control-Expose-Headers": "Content-Length,Content-Type",
