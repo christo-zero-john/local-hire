@@ -3,13 +3,23 @@ import { NextResponse } from "next/server";
 import { fetchJobs } from "../modules/Supabase";
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin":
+    "https://project-hjidobg8incb0yzib1ur.framercanvas.com/",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, ngrok-skip-browser-warning",
 };
 
 export async function OPTIONS() {
-  return new Response(null, { status: 204, headers: corsHeaders });
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+      "Access-Control-Allow-Headers":
+        "Content-Type, ngrok-skip-browser-warning",
+      "Access-Control-Max-Age": "86400",
+    },
+  });
 }
 
 export async function GET() {
