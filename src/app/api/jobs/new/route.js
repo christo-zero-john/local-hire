@@ -1,44 +1,43 @@
-// src/app/api/jobs/new/route.js
+// src/app/api/jobs/route.js
 import { NextResponse } from "next/server";
-import { newJob } from "../../modules/Supabase";
+import { fetchJobs } from "../modules/Supabase"; // adjust path if needed
 
-// Get allowed origins from environment or default to wildcard for development
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-  : ['*'];
+const allowedRequestHeaders = [
+  "content-type",
+  "authorization",
+  "ngrok-skip-browser-warning",
+];
 
-// For development, allow all origins. For production, use specific origins
-const corsOrigin = allowedOrigins.includes('*') ? '*' : allowedOrigins[0];
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": corsOrigin,
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, ngrok-skip-browser-warning",
-};
-
-export async function OPTIONS() {
-  return new Response(null, { status: 204, headers: corsHeaders });
+// helper to build CORS headers; echoes origin if present
+function buildCorsHeaders(request) {
+  const origin = request?.headers?.get?.("origin") || "*";
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": allowedRequestHeaders.join(", "),
+    "Access-Control-Expose-Headers": "Content-Length,Content-Type",
+    "Access-Control-Max-Age": "86400",
+  };
 }
 
-export async function POST(request) {
-  const body = await request.json().catch(() => null);
-  if (!body || typeof body !== "object") {
-    return NextResponse.json(
-      { ok: false, error: "Invalid JSON body" },
-      { status: 400, headers: corsHeaders }
-    );
-  }
-
-  const result = await newJob(body);
-  if (!result.ok) {
-    return NextResponse.json(
-      { ok: false, error: result.error },
-      { status: 500, headers: corsHeaders }
-    );
-  }
-
-  return NextResponse.json(
-    { ok: true, data: result.data, events: ["validated", "created_job"] },
-    { status: 201, headers: corsHeaders }
-  );
+// handle preflight
+export async function OPTIONS(request) {
+  const headers = buildCorsHeaders(request);
+  return new NextResponse(null, { status: 204, headers });
 }
+
+export async function GET(request) {
+  const headers = buildCorsHeaders(request);
+  try {
+    // adapt to how your fetchJobs returns data
+    const jobs = await fetchJobs();
+    return NextResponse.json(jobs, { status: 200, headers });
+  } catch (err) {
+    return NextResponse.json(
+      { error: err?.message ?? "Unknown error" },
+      { status: 500, headers }
+    );
+  }
+}
+
+// if you also accept POST, add POST(request) and include same headers in the response
