@@ -4,7 +4,7 @@ import { newJob } from "../../modules/Supabase";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, ngrok-skip-browser-warning",
 };
 
