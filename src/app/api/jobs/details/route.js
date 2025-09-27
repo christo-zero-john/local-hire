@@ -13,7 +13,7 @@ export async function OPTIONS() {
 }
 
 // GET /api/jobs/details -> { ok: true, job: {...}, events: [...] }
-export async function GET(request) {
+export async function POST(request) {
   console.log("[api] GET /api/jobs/details: received request");
 
   // Get job ID from query parameters
