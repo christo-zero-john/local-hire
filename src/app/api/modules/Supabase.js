@@ -103,6 +103,41 @@ export async function newJob(job) {
 }
 
 /**
+ * Get a specific job by ID from the 'jobs' table.
+ * - Expects a job ID (string or number)
+ * - Returns { ok: boolean, data?: object, error?: string }
+ */
+export async function getJobById(jobId) {
+  const supabase = getSupabaseAdmin();
+
+  console.log("[supabase] getJobById: starting", { jobId });
+
+  // Validate job ID
+  if (!jobId) {
+    console.error("[supabase] getJobById: missing job ID");
+    return { ok: false, error: "Job ID is required" };
+  }
+
+  const { data, error } = await supabase
+    .from("jobs")
+    .select("*")
+    .eq("id", jobId)
+    .single();
+
+  if (error) {
+    console.error("[supabase] getJobById: error", error);
+    if (error.code === "PGRST116") {
+      // No rows returned
+      return { ok: false, error: "Job not found" };
+    }
+    return { ok: false, error: error.message ?? "Failed to fetch job" };
+  }
+
+  console.log("[supabase] getJobById: success", { id: data?.id });
+  return { ok: true, data };
+}
+
+/**
  * Optional: export the raw admin client if you need advanced queries elsewhere.
  */
 export function getSupabase() {
