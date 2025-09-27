@@ -84,24 +84,3 @@ export async function GET(request) {
     );
   }
 }
-
-/**
- * Optional: add POST if you will create jobs from the frontend.
- * It uses the same CORS header builder so preflight and actual request headers match.
- */
-/*
-export async function POST(request) {
-  const headers = buildCorsHeaders(request);
-  try {
-    const body = await request.json();
-    // handle creating job via your Supabase module (implement addJob)
-    const result = await addJob(body);
-    if (!result?.ok) {
-      return NextResponse.json({ ok: false, error: result.error }, { status: 500, headers });
-    }
-    return NextResponse.json({ ok: true, job: result.data }, { status: 201, headers });
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500, headers });
-  }
-}
-*/
